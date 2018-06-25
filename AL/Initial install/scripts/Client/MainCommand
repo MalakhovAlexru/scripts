@@ -9,319 +9,319 @@
 
 # меню для клиента (2.)
 function menuLv2_Client() {
-	clear
-	echo "1.Установка программ"
-	echo "2.Настройка конфигурационных файлов (ntp,hosts,hostname,ossec)"
-	echo "3.Настройка static interface"
-	echo "4.Настройка dhcp interface"
-	echo "5.выход"
-	read -p "Введите число: " answer
-	case $answer in
-	1)
-		echo "Установка программ..."
-		installPO_Client
-		;;
-	2)
-		echo "Настройка конфигурационных файлов..."
-		startCommand_client_2
-		;;
-	3)
-		echo "Настройка static interface..."
-		settUPnetwork_local
-		;;
-	4)
-		echo "Настройка dhcp interface..."
-		settUPnetwork_dhcp
-		;;
-	5)
-		echo "выход"
-		exit
-		;;
-	*) echo "Пожалуйста выберите один из вариантов и введите его номер." ;;
-	esac
+    clear
+    echo "1.Установка программ"
+    echo "2.Настройка конфигурационных файлов (ntp,hosts,hostname,ossec)"
+    echo "3.Настройка static interface"
+    echo "4.Настройка dhcp interface"
+    echo "5.выход"
+    read -p "Введите число: " answer
+    case $answer in
+        1)
+            echo "Установка программ..."
+            installPO_Client
+        ;;
+        2)
+            echo "Настройка конфигурационных файлов..."
+            startCommand_client_2
+        ;;
+        3)
+            echo "Настройка static interface..."
+            settUPnetwork_local
+        ;;
+        4)
+            echo "Настройка dhcp interface..."
+            settUPnetwork_dhcp
+        ;;
+        5)
+            echo "выход"
+            exit
+        ;;
+        *) echo "Пожалуйста выберите один из вариантов и введите его номер." ;;
+    esac
 }
 
 # меню для сервера (2.)
 function menuLv2_Srv() {
-	clear
-	echo "1.Установка программ"
-	echo "2.Настройка конфигурационных файлов (ntp,hosts,hostname,ossec,interfaces)"
-	echo "3.выход"
-	read -p "Введите число: " answer
-	case $answer in
-	1)
-		echo "Установка программ..."
-		installPO_Server
-		;;
-	2)
-		echo "Настройка конфигурационных файлов (ntp,hosts,hostname,ossec,interfaces)..."
-		startCommand_srv_2
-		;;
-	3)
-		echo "выход"
-		exit
-		;;
-	*) echo "Пожалуйста выберите один из вариантов и введите его номер." ;;
-	esac
+    clear
+    echo "1.Установка программ"
+    echo "2.Настройка конфигурационных файлов (ntp,hosts,hostname,ossec,interfaces)"
+    echo "3.выход"
+    read -p "Введите число: " answer
+    case $answer in
+        1)
+            echo "Установка программ..."
+            installPO_Server
+        ;;
+        2)
+            echo "Настройка конфигурационных файлов (ntp,hosts,hostname,ossec,interfaces)..."
+            startCommand_srv_2
+        ;;
+        3)
+            echo "выход"
+            exit
+        ;;
+        *) echo "Пожалуйста выберите один из вариантов и введите его номер." ;;
+    esac
 }
 
 function startCommand_client_2() {
-	#searchAndBackUP_Files
-	chngName
+    #searchAndBackUP_Files
+    chngName
 }
 
 function startCommand_srv_2() {
-	chngName
-	bindSettUp_zones
-	ntpSettUp
-	settUPnetwork_local
+    chngName
+    bindSettUp_zones
+    ntpSettUp
+    settUPnetwork_local
 }
 
 function chngName() {
-	cp /etc/hosts /root/scripts/Client/BackUP/hosts
-	cp /root/scripts/Client/Paterns/hosts /etc/hosts
-	cp /etc/hostname /root/scripts/Client/BackUP/hostname
-	cp /root/scripts/Client/Paterns/hostname /etc/hostname
-	cp /etc/init.d/ntpdate /root/scripts/Client/BackUP/ntpdate
-	cp /root/scripts/Client/Paterns/ntpdate /etc/init.d/ntpdate
-	# while read hostName
-	# do echo "PrevName is '$hostName' copied"
-	# prevHostName=$hostName
-	# done < /etc/hostname
-	# echo "$prevHostName"
-	read -p "Введите новый IP (192.168.1.1) : " newHostIP
-	echo "$newHostIP"
-	# реализовать проверку IP и имени
-	read -p "Введите новое имя для системы (example): " newHostName
-	echo "$newHostName"
-	# read -p "Введите название домена (.example.com) : " domainName
-	domainName=".uts.local"
-	# read -p "Введите имя сервера NTP (serverName) : " serverNTP
-	serverNTP="arm01"
-	fullNameHost="$newHostName$domainName"
-	fullNameNTP="$serverNTP$domainName"
-	sed -i 's/127.0.1.1/'$newHostIP'/' /etc/hosts
-	sed -i 's/astra/'$fullNameHost' '$newHostName'/' /etc/hosts
-	sed -i 's/astra/'$newHostName'/' /etc/hostname
-	sed -i 's/astra/'$fullNameNTP'/' /etc/init.d/ntpdate
-	chmod 755 /etc/init.d/ntpdate
+    cp /etc/hosts /root/scripts/Client/BackUP/hosts
+    cp /root/scripts/Client/Paterns/hosts /etc/hosts
+    cp /etc/hostname /root/scripts/Client/BackUP/hostname
+    cp /root/scripts/Client/Paterns/hostname /etc/hostname
+    cp /etc/init.d/ntpdate /root/scripts/Client/BackUP/ntpdate
+    cp /root/scripts/Client/Paterns/ntpdate /etc/init.d/ntpdate
+    # while read hostName
+    # do echo "PrevName is '$hostName' copied"
+    # prevHostName=$hostName
+    # done < /etc/hostname
+    # echo "$prevHostName"
+    read -p "Введите новый IP (192.168.1.1) : " newHostIP
+    echo "$newHostIP"
+    # реализовать проверку IP и имени
+    read -p "Введите новое имя для системы (example): " newHostName
+    echo "$newHostName"
+    # read -p "Введите название домена (.example.com) : " domainName
+    domainName=".uts.local"
+    # read -p "Введите имя сервера NTP (serverName) : " serverNTP
+    serverNTP="arm01"
+    fullNameHost="$newHostName$domainName"
+    fullNameNTP="$serverNTP$domainName"
+    sed -i 's/127.0.1.1/'$newHostIP'/' /etc/hosts
+    sed -i 's/astra/'$fullNameHost' '$newHostName'/' /etc/hosts
+    sed -i 's/astra/'$newHostName'/' /etc/hostname
+    sed -i 's/astra/'$fullNameNTP'/' /etc/init.d/ntpdate
+    chmod 755 /etc/init.d/ntpdate
 }
 
 # установка программ (клиент)
 function installPO_Client() {
-	apt-get install ossec-hids-agent lftp ald-client-common resolvconf
-	dpkg -i --force-architecture /root/scripts/distr/kav4fs-astra_8.0.4-312_i386.deb
+    apt-get install ossec-hids-agent lftp ald-client-common resolvconf
+    dpkg -i --force-architecture /root/scripts/distr/kav4fs-astra_8.0.4-312_i386.deb
 }
 
 # установка программ (сервер)
 function installPO_Server() {
-	apt-get install fly-admin-ald-se apache2-meta ossec-hids-server ossec-web vsftpd fly-admin-ftp ald-server-common ald-admin-common bind9 libapache2-mod-auth-kerb
-	dpkg -i --force-architecture /root/scripts/distr/kav4fs-astra_8.0.4-312_i386.deb
+    apt-get install fly-admin-ald-se apache2-meta ossec-hids-server ossec-web vsftpd fly-admin-ftp ald-server-common ald-admin-common bind9 libapache2-mod-auth-kerb
+    dpkg -i --force-architecture /root/scripts/distr/kav4fs-astra_8.0.4-312_i386.deb
 }
 
 # удаление программ клиент и сервер
 function deletePO() {
-	apt-get purge fly-admin-ald-se avahi-daemon ossec-hids-agent ald-client-common ossec-hids-server ossec-web vsftpd fly-admin-ftp ald-server-common ald-admin-common bind9 libapache2-mod-auth-kerb qpat psi fly-sms fly-phone-webbrowser fly-contacts fly-mail thunderbird wvdial fly-dialer fly-qml-dialer easypaint gimp fly-scan fly-photocamera brasero qasmixer guvcview fly-videocamera fly-record vlc vlc-data vlc-plugin-jack vlc-nox vlc-astra vlc-tablet-plugin vlc-plugin-sdl libvlc5 fly-calc fly-hexedit fly-launcher qbat printer-driver-postscript-hp hplip-gui hplip-data printer-driver-hpcups mc mc-data
+    apt-get purge fly-admin-ald-se avahi-daemon ossec-hids-agent ald-client-common ossec-hids-server ossec-web vsftpd fly-admin-ftp ald-server-common ald-admin-common bind9 libapache2-mod-auth-kerb qpat psi fly-sms fly-phone-webbrowser fly-contacts fly-mail thunderbird wvdial fly-dialer fly-qml-dialer easypaint gimp fly-scan fly-photocamera brasero qasmixer guvcview fly-videocamera fly-record vlc vlc-data vlc-plugin-jack vlc-nox vlc-astra vlc-tablet-plugin vlc-plugin-sdl libvlc5 fly-calc fly-hexedit fly-launcher qbat printer-driver-postscript-hp hplip-gui hplip-data printer-driver-hpcups mc mc-data
 }
 
 function settUPnetwork_local() {
-	cp /etc/network/interfaces /root/scripts/Client/BackUP/interfaces
-	# cp /root/scripts/Client/Paterns/interfaces /etc/network/interfaces
-	# read -p "Введите новый IP хоста: " newHostIP
-	# echo "$newHostIP"
-	# read -p "Введите новый IP шлюза: " gatewayIP
-	# echo "$gatewayIP"
-	# read -p "Введите новый IP dns-сервера: " dnsSrvIP
-	# dnsSrvIP=
-	sed -i '11a\dns-nameservers 192.168.58.11' /etc/network/interfaces
-	killall fly-admin-wicd
-	rm /etc/xdg/autostart/fly-admin-wicd.desktop
-	service wicd stop
-	update-rc.d wicd disable
-	killall dhclient
-	service networking restart
+    cp /etc/network/interfaces /root/scripts/Client/BackUP/interfaces
+    # cp /root/scripts/Client/Paterns/interfaces /etc/network/interfaces
+    # read -p "Введите новый IP хоста: " newHostIP
+    # echo "$newHostIP"
+    # read -p "Введите новый IP шлюза: " gatewayIP
+    # echo "$gatewayIP"
+    # read -p "Введите новый IP dns-сервера: " dnsSrvIP
+    # dnsSrvIP=
+    sed -i '11a\dns-nameservers 192.168.58.11' /etc/network/interfaces
+    killall fly-admin-wicd
+    rm /etc/xdg/autostart/fly-admin-wicd.desktop
+    service wicd stop
+    update-rc.d wicd disable
+    killall dhclient
+    service networking restart
 }
 
 function settUPnetwork_dhcp() {
-	cp /etc/network/interfaces /root/scripts/Client/BackUP/interfaces
-	cp /root/scripts/Client/Paterns/interfaces /etc/network/interfaces
-	sed -i '8,$d' /etc/network/interfaces
-	sed -i '6a\\nauto eth0\niface eth0 inet dhcp' /etc/network/interfaces
-	killall fly-admin-wicd
-	rm /etc/xdg/autostart/fly-admin-wicd.desktop
-	service wicd stop
-	update-rc.d wicd disable
-	service networking restart
+    cp /etc/network/interfaces /root/scripts/Client/BackUP/interfaces
+    cp /root/scripts/Client/Paterns/interfaces /etc/network/interfaces
+    sed -i '8,$d' /etc/network/interfaces
+    sed -i '6a\\nauto eth0\niface eth0 inet dhcp' /etc/network/interfaces
+    killall fly-admin-wicd
+    rm /etc/xdg/autostart/fly-admin-wicd.desktop
+    service wicd stop
+    update-rc.d wicd disable
+    service networking restart
 }
 
 function bindSettUp_zones() {
-	# Делаем БЭК и копируем настройки из шаблона опций
-
-	cp /etc/bind/named.conf.options /root/scripts/Server/BackUP/named.conf.options
-	cp /root/scripts/Server/Paterns/bind/named.conf.options /etc/bind/named.conf.options
-	# Делаем БЭК и копируем настройки зон
-	cp /etc/bind/named.conf.options /root/scripts/Server/BackUP/named.conf.local
-	cp /root/scripts/Server/Paterns/bind/named.conf.local /etc/bind/named.conf.local
-	# Делаем каталог для зон и копируем в них настройки для зон (обр и прямой)
-	mkdir -p /etc/bind/zones/class
-	cp /root/scripts/Server/Paterns/bind/flz.class.zone /etc/bind/zones/class/
-	cp /root/scripts/Server/Paterns/bind/rlz.class.zone /etc/bind/zones/class/
-
-	/etc/init.d/bind9 restart
-	rndc reload
-
+    # Делаем БЭК и копируем настройки из шаблона опций
+    
+    cp /etc/bind/named.conf.options /root/scripts/Server/BackUP/named.conf.options
+    cp /root/scripts/Server/Paterns/bind/named.conf.options /etc/bind/named.conf.options
+    # Делаем БЭК и копируем настройки зон
+    cp /etc/bind/named.conf.options /root/scripts/Server/BackUP/named.conf.local
+    cp /root/scripts/Server/Paterns/bind/named.conf.local /etc/bind/named.conf.local
+    # Делаем каталог для зон и копируем в них настройки для зон (обр и прямой)
+    mkdir -p /etc/bind/zones/class
+    cp /root/scripts/Server/Paterns/bind/flz.class.zone /etc/bind/zones/class/
+    cp /root/scripts/Server/Paterns/bind/rlz.class.zone /etc/bind/zones/class/
+    
+    /etc/init.d/bind9 restart
+    rndc reload
+    
 }
 
 function ntpSettUp() {
-	# Делаем БЭК и копируем настройки из шаблона опций
-	cp /etc/ntp.conf /root/scripts/Server/BackUP/ntp.conf
-	cp /root/scripts/Server/Paterns/ntp/ntp.conf /etc/ntp.conf
-	update-rc.d ntp defaults
+    # Делаем БЭК и копируем настройки из шаблона опций
+    cp /etc/ntp.conf /root/scripts/Server/BackUP/ntp.conf
+    cp /root/scripts/Server/Paterns/ntp/ntp.conf /etc/ntp.conf
+    update-rc.d ntp defaults
 }
 
 ###   OSSEC
 
 function initOssec_server() {
-
-	mkdir -p /var/remote_logs
-	setfacl -d -m u:ossec:rx /var/remote_logs/
-	setfacl -R -m u:ossec:rx /var/remote_logs/
-
-	cp /var/ossec/etc/10-ossec-syslog.conf /etc/rsyslog.d/
-	service rsyslog restart
-
-	cp /root/scripts/Server/Paterns/ossec/ossec.conf /var/ossec/etc/ossec.conf
-	cp /root/scripts/Server/Paterns/ossec/ossec_audit_send.sh /var/ossec/bin/ossec_audit_send.sh
-
-	/etc/init.d/ossec-hids-server restart
-
-	cp /root/scripts/Server/Paterns/ossec/rsyslog.conf /etc/rsyslog.conf
-	read -p "Введите полное имя сервера ossec на который будут пересылаться записи (ossec.example.com): " ossecSRV
-	echo "$ossecSRV"
-
-	sed -i '/ASTRA.DOMAIN.LOCAL/s/ASTRA.DOMAIN.LOCAL/'$ossecSRV'/' /etc/rsyslog.conf
-
-	service rsyslog restart
-
-	# Все агентские машины должны быть добавлены на сервере через
-	# интерактивную команду /var/ossec/bin/manage_agents всех агентов,
-	# указав их имя и IP-адрес и экспортировать ключ.
-	function Ossec_addClient() {
-		/var/ossec/bin/manage_agents
-	}
+    
+    mkdir -p /var/remote_logs
+    setfacl -d -m u:ossec:rx /var/remote_logs/
+    setfacl -R -m u:ossec:rx /var/remote_logs/
+    
+    cp /var/ossec/etc/10-ossec-syslog.conf /etc/rsyslog.d/
+    service rsyslog restart
+    
+    cp /root/scripts/Server/Paterns/ossec/ossec.conf /var/ossec/etc/ossec.conf
+    cp /root/scripts/Server/Paterns/ossec/ossec_audit_send.sh /var/ossec/bin/ossec_audit_send.sh
+    
+    /etc/init.d/ossec-hids-server restart
+    
+    cp /root/scripts/Server/Paterns/ossec/rsyslog.conf /etc/rsyslog.conf
+    read -p "Введите полное имя сервера ossec на который будут пересылаться записи (ossec.example.com): " ossecSRV
+    echo "$ossecSRV"
+    
+    sed -i '/ASTRA.DOMAIN.LOCAL/s/ASTRA.DOMAIN.LOCAL/'$ossecSRV'/' /etc/rsyslog.conf
+    
+    service rsyslog restart
+    
+    # Все агентские машины должны быть добавлены на сервере через
+    # интерактивную команду /var/ossec/bin/manage_agents всех агентов,
+    # указав их имя и IP-адрес и экспортировать ключ.
+    function Ossec_addClient() {
+        /var/ossec/bin/manage_agents
+    }
 }
 
 function initWeb() {
-	#     астройка пакета ossec-web осуществляется на сервере.
-	# Дать права для пользователя audit-user к файлам сервиса ossec и web-интерфейсу:
-	# создаем пользователя
-	adduser audit-user
-
-	# назначаем права
-	setfacl -R -m u:audit-user:rwx /var/www/ossec/
-	setfacl -dR -m u:audit-user:rwx /var/www/ossec/
-	setfacl -m u:audit-user:rx /var/ossec/
-	setfacl -m u:audit-user:rx /var/ossec/bin/
-	setfacl -m u:audit-user:rx /var/ossec/bin/manage_agents
-	setfacl -m u:audit-user:rx /var/ossec/bin/agent_control
-	setfacl -R -m u:audit-user:rx /var/ossec/rules/
-
-	setfacl -R -m u:www-data:rx /var/www/ossec/
-	setfacl -dR -m u:www-data:rx /var/www/ossec/
+    #     астройка пакета ossec-web осуществляется на сервере.
+    # Дать права для пользователя audit-user к файлам сервиса ossec и web-интерфейсу:
+    # создаем пользователя
+    adduser audit-user
+    
+    # назначаем права
+    setfacl -R -m u:audit-user:rwx /var/www/ossec/
+    setfacl -dR -m u:audit-user:rwx /var/www/ossec/
+    setfacl -m u:audit-user:rx /var/ossec/
+    setfacl -m u:audit-user:rx /var/ossec/bin/
+    setfacl -m u:audit-user:rx /var/ossec/bin/manage_agents
+    setfacl -m u:audit-user:rx /var/ossec/bin/agent_control
+    setfacl -R -m u:audit-user:rx /var/ossec/rules/
+    
+    setfacl -R -m u:www-data:rx /var/www/ossec/
+    setfacl -dR -m u:www-data:rx /var/www/ossec/
 }
 
 function initOssec_client() {
-	cp /var/ossec/etc/ossec.conf /root/scripts/Client/BackUP/ossec.conf
-	cp /var/ossec/bin/ossec_audit_send.sh /root/scripts/Client/BackUP/ossec_audit_send.sh
-
-	cp /root/scripts/Client/Paterns/ossec/ossec.conf /var/ossec/etc/ossec.conf
-	cp /root/scripts/Client/Paterns/ossec/ossec_audit_send.sh /var/ossec/bin/ossec_audit_send.sh
-
-	read -p "Введите полное имя сервера ossec на который будут пересылаться записи (ossec.example.com): " ossecSRV
-	echo "$ossecSRV"
-	sed -i '$a\\n*.* @@'$ossecSRV'\n$SystemLogRateLimitInterval 2\n$SystemLogRateLimitBurst 50000' /etc/rsyslog.conf
-
-	service rsyslog restart
-
-	/var/ossec/bin/manage_agents
-
-	/etc/init.d/ossec-hids-agent restart
+    cp /var/ossec/etc/ossec.conf /root/scripts/Client/BackUP/ossec.conf
+    cp /var/ossec/bin/ossec_audit_send.sh /root/scripts/Client/BackUP/ossec_audit_send.sh
+    
+    cp /root/scripts/Client/Paterns/ossec/ossec.conf /var/ossec/etc/ossec.conf
+    cp /root/scripts/Client/Paterns/ossec/ossec_audit_send.sh /var/ossec/bin/ossec_audit_send.sh
+    
+    read -p "Введите полное имя сервера ossec на который будут пересылаться записи (ossec.example.com): " ossecSRV
+    echo "$ossecSRV"
+    sed -i '$a\\n*.* @@'$ossecSRV'\n$SystemLogRateLimitInterval 2\n$SystemLogRateLimitBurst 50000' /etc/rsyslog.conf
+    
+    service rsyslog restart
+    
+    /var/ossec/bin/manage_agents
+    
+    /etc/init.d/ossec-hids-agent restart
 }
 
 function setUpOSSEC() {
-	clear
-	echo "1.Настройка ossec (сервер)"
-	echo "2.Добавление клиентов в ossec"
-	echo "3.Удаление ossec"
-	# echo "4.initKES8"
-	echo "4.Выход"
-	read -p "Введите число: " answer
-	case $answer in
-	1)
-		echo "Настройка ossec (сервер)..."
-		initOssec_server initWeb
-		;;
-	2)
-		echo "Добавление клиентов в ossec..."
-		Ossec_addClient
-		;;
-	3)
-		echo "Удаление ossec..."
-		apt-get purge ossec-hids-server ossec-hids-agent ossec-web
-		;;
-	# 4) echo "3";menuLv2_Srv;;
-	# 4) echo "4";initKES8;;
-	4)
-		echo "Goodbye."
-		exit
-		;;
-	*) echo "Пожалуйста выберите один из вариантов и введите его номер." ;;
-	esac
+    clear
+    echo "1.Настройка ossec (сервер)"
+    echo "2.Добавление клиентов в ossec"
+    echo "3.Удаление ossec"
+    # echo "4.initKES8"
+    echo "4.Выход"
+    read -p "Введите число: " answer
+    case $answer in
+        1)
+            echo "Настройка ossec (сервер)..."
+            initOssec_server initWeb
+        ;;
+        2)
+            echo "Добавление клиентов в ossec..."
+            Ossec_addClient
+        ;;
+        3)
+            echo "Удаление ossec..."
+            apt-get purge ossec-hids-server ossec-hids-agent ossec-web
+        ;;
+        # 4) echo "3";menuLv2_Srv;;
+        # 4) echo "4";initKES8;;
+        4)
+            echo "Goodbye."
+            exit
+        ;;
+        *) echo "Пожалуйста выберите один из вариантов и введите его номер." ;;
+    esac
 }
 
 ### KAV4FS
 
 function deleteKES8() {
-	dpkg --purge kav4fs-astra
+    dpkg --purge kav4fs-astra
 }
 # инициализация КЕС
 function start_script() {
-	/opt/kaspersky/kav4fs/bin/kav4fs-setup.pl
-
-	# /opt/kaspersky/kav4fs/bin/kav4fs-control --get-task-list
-	/opt/kaspersky/kav4fs/bin/kav4fs-control --set-settings 6 --file /root/scripts/confs/KAV/kav_Upd
-	/opt/kaspersky/kav4fs/bin/kav4fs-control --create-task fullChk --use-task-type ODS --file /root/scripts/confs/KAV/kav_fullChk
-	/opt/kaspersky/kav4fs/bin/kav4fs-control --create-task fastChk --use-task-type ODS --file /root/scripts/confs/KAV/kav_fastChk
-
-	# запуск задачи защиты в реальном времени
-	/opt/kaspersky/kav4fs/bin/kav4fs-control --start-task 8
-
+    /opt/kaspersky/kav4fs/bin/kav4fs-setup.pl
+    
+    # /opt/kaspersky/kav4fs/bin/kav4fs-control --get-task-list
+    /opt/kaspersky/kav4fs/bin/kav4fs-control --set-settings 6 --file /root/scripts/confs/KAV/kav_Upd
+    /opt/kaspersky/kav4fs/bin/kav4fs-control --create-task fullChk --use-task-type ODS --file /root/scripts/confs/KAV/kav_fullChk
+    /opt/kaspersky/kav4fs/bin/kav4fs-control --create-task fastChk --use-task-type ODS --file /root/scripts/confs/KAV/kav_fastChk
+    
+    # запуск задачи защиты в реальном времени
+    /opt/kaspersky/kav4fs/bin/kav4fs-control --start-task 8
+    
 }
 function settUpKES() {
-	clear
-	echo "1.Настройка скрипта"
-	echo "2.Удаление антивируса"
-	# echo "3.Настройка сервера"
-	# echo "4.initKES8"
-	echo "3.Выход"
-	read -p "Введите число: " answer
-	case $answer in
-	1)
-		echo "Настройка скрипта..."
-		start_script
-		;;
-	2)
-		echo "Удаление антивируса..."
-		deleteKES8
-		;;
-	# 3) echo "3";menuLv2_Srv;;
-	# 4) echo "4";initKES8;;
-	3)
-		echo "Goodbye."
-		exit
-		;;
-	*) echo "Пожалуйста выберите один из вариантов и введите его номер." ;;
-	esac
+    clear
+    echo "1.Настройка скрипта"
+    echo "2.Удаление антивируса"
+    # echo "3.Настройка сервера"
+    # echo "4.initKES8"
+    echo "3.Выход"
+    read -p "Введите число: " answer
+    case $answer in
+        1)
+            echo "Настройка скрипта..."
+            start_script
+        ;;
+        2)
+            echo "Удаление антивируса..."
+            deleteKES8
+        ;;
+        # 3) echo "3";menuLv2_Srv;;
+        # 4) echo "4";initKES8;;
+        3)
+            echo "Goodbye."
+            exit
+        ;;
+        *) echo "Пожалуйста выберите один из вариантов и введите его номер." ;;
+    esac
 }
 
 # основное меню
@@ -334,29 +334,29 @@ echo "5.Настройка OSSEC"
 echo "6.выход"
 read -p "Введите число: " answer
 case $answer in
-1)
-	echo "1"
-	deletePO
-	;;
-2)
-	echo "2"
-	menuLv2_Client
-	;;
-3)
-	echo "3"
-	menuLv2_Srv
-	;;
-4)
-	echo "4"
-	settUpKES
-	;;
-5)
-	echo "5"
-	setUpOSSEC
-	;;
-6)
-	echo "Goodbye."
-	exit
-	;;
-*) echo "Пожалуйста выберите один из вариантов и введите его номер." ;;
+    1)
+        echo "1"
+        deletePO
+    ;;
+    2)
+        echo "2"
+        menuLv2_Client
+    ;;
+    3)
+        echo "3"
+        menuLv2_Srv
+    ;;
+    4)
+        echo "4"
+        settUpKES
+    ;;
+    5)
+        echo "5"
+        setUpOSSEC
+    ;;
+    6)
+        echo "Goodbye."
+        exit
+    ;;
+    *) echo "Пожалуйста выберите один из вариантов и введите его номер." ;;
 esac
