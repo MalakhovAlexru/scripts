@@ -1,0 +1,35 @@
+#!/bin/bash
+# Настройка сетевого интерфейса на компьютере
+
+# перекодирование в linux
+#cat MainCommand | tr -d '\r' > MainCommand2
+
+function settUPnetwork_local() {
+	# read -p "Введите новый IP хоста: " $1
+	echo "IP хоста: $1"
+	read -p "Введите новый IP шлюза: " gatewayIP
+	echo "$gatewayIP"
+	read -p "Введите новый IP dns-сервера: " dnsSrvIP
+	echo "$dnsSrvIP"
+	sed -i -e '
+/address/s/127.0.1.1/'$1'/; 
+/netmask/s/127.0.1.1/255.255.255.0/;
+/gateway/s/127.0.1.1/'$gatewayIP'/;
+/dns-nameservers/s/127.0.1.1/'$dnsSrvIP'/' /etc/network/interfaces
+	killall fly-admin-wicd
+	rm /etc/xdg/autostart/fly-admin-wicd.desktop
+	service wicd stop
+	update-rc.d wicd disable
+	killall dhclient
+	service networking restart
+}
+
+function settUPnetwork_dhcp() {
+	sed -i '8,$d' /etc/network/interfaces
+	sed -i '6a\\nauto eth0\niface eth0 inet dhcp' /etc/network/interfaces
+	killall fly-admin-wicd
+	rm /etc/xdg/autostart/fly-admin-wicd.desktop
+	service wicd stop
+	update-rc.d wicd disable
+	service networking restart
+}

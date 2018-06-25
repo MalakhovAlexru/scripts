@@ -1,0 +1,13 @@
+58.168.192.in-addr.arpa. 10800 IN SOA uts.local. user.arm-01.uts.local. 201815151 (
+						10h ; slave-server connection period
+						1h ; retry
+						1w ; lifecycle
+						1h ); negative ttl
+						
+		NS arm-01.uts.local.
+
+
+
+1 PTR arm-01.uts.local.
+2 PTR arm-02.uts.local.
+

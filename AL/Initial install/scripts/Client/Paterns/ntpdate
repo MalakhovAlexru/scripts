@@ -1,0 +1,1 @@
+*/10 * * * * root /usr/sbin/ntpdate astra

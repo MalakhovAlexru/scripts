@@ -1,0 +1,21 @@
+$TTL 14400
+
+@ IN SOA arm-01.uts.local. user.arm-01.uts.local. (
+						201815151 ; Serial
+						10800     ; slave-srv connection period
+						3600      ; retry
+						604800    ; Expire
+						604800    ; negative cache TTL
+						)
+						
+	
+@ IN NS arm-01.uts.local.
+@ IN A 192.168.58.11
+
+arm-01 IN A 192.168.58.11
+arm-01 A 192.168.58.11
+arm-02 A 192.168.58.12
+
+
+
+* IN CNAME @

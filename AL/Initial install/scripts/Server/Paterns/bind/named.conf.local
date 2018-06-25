@@ -1,0 +1,12 @@
+zone "uts.local" {
+	type master;
+	file "/etc/bind/zones/kco/flz.uts.zone";
+	allow-transfer { 127.0.0.1; };
+	
+};
+zone "58.168.192.in-addr.arpa" {
+	type master;
+	file "/etc/bind/zones/kco/rlz.uts.zone";
+	allow-transfer { 127.0.0.1; };
+	
+};

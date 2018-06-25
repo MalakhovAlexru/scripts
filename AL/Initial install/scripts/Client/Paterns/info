@@ -1,0 +1,17 @@
+ossec
+Установить пакет ossec-hids-agent
+Раскоментировать в файле /var/ossec/etc/ossec.conf строки:
+
+<localfile>
+
+<log_format>command</log_format>
+
+<command>/var/ossec/bin/check_running_audit_send.sh</command>
+
+</localfile>
+
+Тут же необходимо изменить параметр <server-ip> на соответствующий серверу (в нашем примере 10.0.0.23):
+
+
+
+<server-ip>10.0.0.23</server-ip>
