@@ -124,6 +124,13 @@ function deletePO() {
     apt-get purge fly-admin-ald-se avahi-daemon ossec-hids-agent ald-client-common ossec-hids-server ossec-web vsftpd fly-admin-ftp ald-server-common ald-admin-common bind9 libapache2-mod-auth-kerb qpat psi fly-sms fly-phone-webbrowser fly-contacts fly-mail thunderbird wvdial fly-dialer fly-qml-dialer easypaint gimp fly-scan fly-photocamera brasero qasmixer guvcview fly-videocamera fly-record vlc vlc-data vlc-plugin-jack vlc-nox vlc-astra vlc-tablet-plugin vlc-plugin-sdl libvlc5 fly-calc fly-hexedit fly-launcher qbat printer-driver-postscript-hp hplip-gui hplip-data printer-driver-hpcups mc mc-data
 }
 
+function aptAutoremove {
+    # apt-get purge fly-admin-ald-se avahi-daemon ossec-hids-agent ald-client-common ossec-hids-server ossec-web vsftpd fly-admin-ftp ald-server-common ald-admin-common bind9 libapache2-mod-auth-kerb qpat psi fly-sms fly-phone-webbrowser fly-contacts fly-mail thunderbird wvdial fly-dialer fly-qml-dialer easypaint gimp fly-scan fly-photocamera brasero qasmixer guvcview fly-videocamera fly-record vlc vlc-data vlc-plugin-jack vlc-nox vlc-astra vlc-tablet-plugin vlc-plugin-sdl libvlc5 fly-calc fly-hexedit fly-launcher qbat printer-driver-postscript-hp hplip-gui hplip-data printer-driver-hpcups mc	mc-data
+    apt-get autoremove
+    apt-get install fly-dm fly-wm fly-run-sumac fly-run juffed fly-admin-power fly-gamma fly-admin-fonts fly-admin-cron flyqt5platformetheme fly-term fly-fm-audit fly-fm-bsign fly-fm-mac fly-shutdown-dialog fly-admin-autostart fly-admin-runlevel fly-brighness fly-doc fly-image fly-fontconfig-settings fly-system-monitor-mac-plugi libflyauth fly-plastique-style fly-alternatives
+    # reboot
+}
+
 function settUPnetwork_local() {
     cp /etc/network/interfaces /root/scripts/Client/BackUP/interfaces
     # cp /root/scripts/Client/Paterns/interfaces /etc/network/interfaces
