@@ -1,11 +1,7 @@
 #!/bin/bash
 
 # Определеине переменных
-# dirforBackUP=~/scripts/BackUP
-# dirforLogs=~/scripts/Logs
-# dirforPatterns=~/scripts/Paterns
-# arrayOfFiles=(/etc/hosts /etc/hostname /etc/init.d/ntpdate /etc/network/interfaces);
-# regex=[^\/]*.$
+# Главная команда скрипта
 
 # меню для клиента (2.)
 function menuLv2_Client() {
@@ -82,8 +78,8 @@ function chngName() {
     cp /root/scripts/Client/Paterns/hosts /etc/hosts
     cp /etc/hostname /root/scripts/Client/BackUP/hostname
     cp /root/scripts/Client/Paterns/hostname /etc/hostname
-    cp /etc/init.d/ntpdate /root/scripts/Client/BackUP/ntpdate
-    cp /root/scripts/Client/Paterns/ntpdate /etc/init.d/ntpdate
+    cp /etc/cron.d/ntpdate /root/scripts/Client/BackUP/ntpdate
+    cp /root/scripts/Client/Paterns/ntpdate /etc/cron.d/ntpdate
     # while read hostName
     # do echo "PrevName is '$hostName' copied"
     # prevHostName=$hostName
@@ -94,17 +90,17 @@ function chngName() {
     # реализовать проверку IP и имени
     read -p "Введите новое имя для системы (example): " newHostName
     echo "$newHostName"
-    # read -p "Введите название домена (.example.com) : " domainName
-    domainName=".uts.local"
-    # read -p "Введите имя сервера NTP (serverName) : " serverNTP
-    serverNTP="arm01"
+    read -p "Введите название домена (.example.com) : " domainName
+    echo "$domainName"
+    read -p "Введите имя сервера NTP (serverName) : " serverNTP
+    echo "$serverNTP"
     fullNameHost="$newHostName$domainName"
     fullNameNTP="$serverNTP$domainName"
     sed -i 's/127.0.1.1/'$newHostIP'/' /etc/hosts
     sed -i 's/astra/'$fullNameHost' '$newHostName'/' /etc/hosts
     sed -i 's/astra/'$newHostName'/' /etc/hostname
-    sed -i 's/astra/'$fullNameNTP'/' /etc/init.d/ntpdate
-    chmod 755 /etc/init.d/ntpdate
+    sed -i 's/astra/'$fullNameNTP'/' /etc/cron.d/ntpdate
+    chmod 755 /etc/cron.d/ntpdate
 }
 
 # установка программ (клиент)
@@ -124,23 +120,38 @@ function deletePO() {
     apt-get purge fly-admin-ald-se avahi-daemon ossec-hids-agent ald-client-common ossec-hids-server ossec-web vsftpd fly-admin-ftp ald-server-common ald-admin-common bind9 libapache2-mod-auth-kerb qpat psi fly-sms fly-phone-webbrowser fly-contacts fly-mail thunderbird wvdial fly-dialer fly-qml-dialer easypaint gimp fly-scan fly-photocamera brasero qasmixer guvcview fly-videocamera fly-record vlc vlc-data vlc-plugin-jack vlc-nox vlc-astra vlc-tablet-plugin vlc-plugin-sdl libvlc5 fly-calc fly-hexedit fly-launcher qbat printer-driver-postscript-hp hplip-gui hplip-data printer-driver-hpcups mc mc-data
 }
 
-function aptAutoremove {
+function aptAutoremove_Client {
     # apt-get purge fly-admin-ald-se avahi-daemon ossec-hids-agent ald-client-common ossec-hids-server ossec-web vsftpd fly-admin-ftp ald-server-common ald-admin-common bind9 libapache2-mod-auth-kerb qpat psi fly-sms fly-phone-webbrowser fly-contacts fly-mail thunderbird wvdial fly-dialer fly-qml-dialer easypaint gimp fly-scan fly-photocamera brasero qasmixer guvcview fly-videocamera fly-record vlc vlc-data vlc-plugin-jack vlc-nox vlc-astra vlc-tablet-plugin vlc-plugin-sdl libvlc5 fly-calc fly-hexedit fly-launcher qbat printer-driver-postscript-hp hplip-gui hplip-data printer-driver-hpcups mc	mc-data
     apt-get autoremove
-    apt-get install fly-dm fly-wm fly-run-sumac fly-run juffed fly-admin-power fly-gamma fly-admin-fonts fly-admin-cron flyqt5platformetheme fly-term fly-fm-audit fly-fm-bsign fly-fm-mac fly-shutdown-dialog fly-admin-autostart fly-admin-runlevel fly-brighness fly-doc fly-image fly-fontconfig-settings fly-system-monitor-mac-plugi libflyauth fly-plastique-style fly-alternatives
+    # apt-get install fly-dm fly-wm fly-run-sumac fly-run juffed fly-admin-power fly-gamma fly-admin-fonts fly-admin-cron flyqt5platformetheme fly-term fly-fm-audit fly-fm-bsign fly-fm-mac fly-shutdown-dialog fly-admin-autostart fly-admin-runlevel fly-brighness fly-doc fly-image fly-fontconfig-settings fly-system-monitor-mac-plugi libflyauth fly-plastique-style fly-alternatives
     # reboot
+    
+    # apt-get install -f - построение зависимостей установленных пакетов
+    apt-get install fly-dm fly-wm fly-alternatives fly-plastique-style fly-system-monitor fly-system-monitor-mac-plugin libfly-system-monitor libflyauth libgtop2-7 libgtop2-common fly-start-panel fly-admin-autostart fly-admin-runlevel fly-shutdown-dialog libnotify-bin fly-fm-audit fly-fm-bsign fly-fm-mac libparsec-aud-qt5-1 fly-term flyqt5platformtheme qt5-style-plugins fly-admin-cron fly-admin-gamma fly-admin-fonts fly-admin-power enca juffed libenca0 libqt5scintilla2-11 libqt5scintilla2-l10n librecode0 fly-run fly-run-sumac lftp
+    
+    # СЕРВЕР (apache+ftp)
+}
+function aptAutoremove_Srv {
+    apt-get autoremove
+    apt-get install apache2-doc astrase-fix-ccache libapache-db-perl libapache-dbi-perl libapache-dbilogger-perl libapache-ruby1.8 libapache2-mod-apreq2 libapache2-mod-auth-kerb libapache2-mod-bw libapache2-mod-encoding libapache2-mod-evasive libapache2-mod-lisp libapache2-mod-perl2 libapache2-mod-perl2-doc libapache2-mod-proxy-html libapache2-mod-python libapache2-mod-python-doc libapache2-mod-rpaf libapache2-mod-ruby libapache2-mod-wsgi libapache2-reload-perl libapache2-request-perl libapreq2 libdbi-perl libdevel-symdump-perl libencode-locale-perl libfile-listing-perl libhtml-parser-perl libhtml-tagset-perl libhtml-tree-perl libhttp-cookies-perl libhttp-date-perl libhttp-message-perl libhttp-negotiate-perl libiconv-hook1 libio-socket-ssl-perl liblwp-mediatypes-perl liblwp-protocol-https-perl libmailtools-perl libnet-http-perl libnet-ssleay-perl libpython2.6 libruby1.8 libtimedate-perl liburi-perl libwww-perl libwww-robotrules-perl python-central python2.6 python2.6-minimal fly-admin-ftp libdb5.1++ vsftpd
+    
 }
 
 function settUPnetwork_local() {
     cp /etc/network/interfaces /root/scripts/Client/BackUP/interfaces
-    # cp /root/scripts/Client/Paterns/interfaces /etc/network/interfaces
-    # read -p "Введите новый IP хоста: " newHostIP
-    # echo "$newHostIP"
-    # read -p "Введите новый IP шлюза: " gatewayIP
-    # echo "$gatewayIP"
+    cp /root/scripts/Client/Paterns/interfaces /etc/network/interfaces
+    read -p "Введите новый IP хоста: " newHostIP
+    echo "$newHostIP"
+    read -p "Введите новый IP шлюза: " gatewayIP
+    echo "$gatewayIP"
+    read -p "Введите новый IP dns-сервера: " dnsSrvIP
+    echo "$dnsSrvIP"
     # read -p "Введите новый IP dns-сервера: " dnsSrvIP
     # dnsSrvIP=
-    sed -i '11a\dns-nameservers 192.168.58.11' /etc/network/interfaces
+    # sed -i '11a\dns-nameservers '$dnsSrvIP'' /etc/network/interfaces
+    sed -i 's/127.0.1.1/'$newHostIP'/' /etc/network/interfaces
+    sed -i 's/127.0.1.2/'$gatewayIP'/' /etc/network/interfaces
+    sed -i 's/127.0.1.3/'$dnsSrvIP'/' /etc/network/interfaces
     killall fly-admin-wicd
     rm /etc/xdg/autostart/fly-admin-wicd.desktop
     service wicd stop
@@ -334,11 +345,12 @@ function settUpKES() {
 # основное меню
 clear
 echo "1.Удаление программ"
-echo "2.Настройка клиента"
-echo "3.Настройка сервера"
-echo "4.Параметры настройки антивируса (KES4FS_astra)"
-echo "5.Настройка OSSEC"
-echo "6.выход"
+echo "2.Удаление зависимостей и установка ряда программ"
+echo "3.Настройка клиента"
+echo "4.Настройка сервера"
+echo "5.Параметры настройки антивируса (KES4FS_astra)"
+echo "6.Настройка OSSEC"
+echo "7.выход"
 read -p "Введите число: " answer
 case $answer in
     1)
@@ -346,22 +358,26 @@ case $answer in
         deletePO
     ;;
     2)
+        echo "1"
+        aptAutoremove_Client
+    ;;
+    3)
         echo "2"
         menuLv2_Client
     ;;
-    3)
+    4)
         echo "3"
         menuLv2_Srv
     ;;
-    4)
+    5)
         echo "4"
         settUpKES
     ;;
-    5)
+    6)
         echo "5"
         setUpOSSEC
     ;;
-    6)
+    7)
         echo "Goodbye."
         exit
     ;;
