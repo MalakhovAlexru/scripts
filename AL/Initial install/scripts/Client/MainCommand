@@ -111,7 +111,7 @@ function installPO_Client() {
 
 # установка программ (сервер)
 function installPO_Server() {
-    apt-get install fly-admin-ald-se apache2-meta ossec-hids-server ossec-web vsftpd fly-admin-ftp ald-server-common ald-admin-common bind9 libapache2-mod-auth-kerb
+    apt-get install fly-admin-ald-se apache2-doc astrase-fix-ccache libapache-db-perl libapache-dbi-perl libapache-dbilogger-perl libapache-ruby1.8 libapache2-mod-apreq2 libapache2-mod-auth-kerb libapache2-mod-auth-pam libapache2-mod-bw libapache2-mod-encoding libapache2-mod-evasive libapache2-mod-lisp libapache2-mod-perl2 libapache2-mod-perl2-doc libapache2-mod-php5 libapache2-mod-proxy-html libapache2-mod-python libapache2-mod-python-doc libapache2-mod-rpaf libapache2-mod-ruby libapache2-mod-wsgi libapache2-reload-perl libapache2-request-perl libapreq2 libdbi-perl libdevel-symdump-perl libencode-locale-perl libfile-listing-perl libhtml-parser-perl libhtml-tagset-perl libhtml-tree-perl libhttp-cookies-perl libhttp-date-perl libhttp-message-perl libhttp-negotiate-perl libiconv-hook1 libio-socket-ssl-perl liblwp-mediatypes-perl liblwp-protocol-https-perl libmailtools-perl libnet-http-perl libnet-ssleay-perl libonig2 libpython2.6 libqdbm14 libruby1.8 libtimedate-perl liburi-perl libwww-perl libwww-robotrules-perl php5-cli php5-common python-central python2.6 python2.6-minimal ossec-hids-server ossec-web vsftpd fly-admin-ftp ald-server-common ald-admin-common bind9 libapache2-mod-auth-kerb
     dpkg -i --force-architecture /root/scripts/distr/kav4fs-astra_8.0.4-312_i386.deb
 }
 
