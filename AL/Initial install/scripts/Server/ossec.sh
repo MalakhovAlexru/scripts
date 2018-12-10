@@ -27,7 +27,21 @@ function initOssec_server() {
     # интерактивную команду /var/ossec/bin/manage_agents всех агентов,
     # указав их имя и IP-адрес и экспортировать ключ.
     function addClient() {
-        /var/ossec/bin/manage_agents
+        # TODO сделать файл для ossec с для генерации ключей агентов в автоматическом режиме
+        
+        # Available options:
+        #         -h          This help message.
+        #         -V          Display OSSEC version.
+        #         -l          List available agents.
+        #         -e <id>     Extracts key for an agent (Manager only).
+        #         -r <id>     Remove an agent. (Manager only).
+        #         -i <id>     Import authentication key (Agent only).
+        #         -f <file>   Bulk generate client keys from file. (Manager only).
+        #                     <file> contains lines in IP,NAME format.
+        
+        
+        
+        /var/ossec/bin/manage_agents -f
     }
 }
 

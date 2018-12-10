@@ -1,40 +1,65 @@
 #!/bin/bash
 # VALUES
+tmpDate=$(date '+%F-%H-%M')
 clientCount=0
 srvCount=0
-IPSubNet='192.168.10.0/24'
-NTPSrv='N/A'
-alddc='N/A'
-domenFullName='.example.com'
-objName='N/A'
+
+# IPSubNet='192.168.10.0/24'
+# NTPSrv='none'
+# alddc='none'
+
+# domenFullName='.example.com'
+# objName='none'
 # workFile=0
 # time=`date '+%F-%H-%M'`
 myRegexp=[1-9,0]{1,3}[.][1-9,0]{1,3}[.][1-9,0]{1,3}[.]
 ID=1
 
+echo "Вас приветсвует скрипт создания файла ответов для полу-автоматической настройки компьютеров на базе ОС Astra Linux."
+read -p  "Для начала, пожалуйста, введите условное обозначение объекта на латинице: " objName
+
+# Создаем лог файл в каталоге с тестовым именем объекта
+mkdir -p ./$objName/logs
+logfile='./'$objName'/logs/logFile'
+awk 'BEGIN {printf "Общая информация о запуске системы представлена ниже:\n\nУсловное обозначение объекта на латинице '$objName'\n'$tmpDate' Запуск скрипта" }' >> $logfile
+
 function makeAnswerFile {
     function enterValues {
         clear
-        read -p  "Введите условное обозначение объекта на латинице: " objName
+        # read -p  "Введите условное обозначение объекта на латинице: " objName
         # реализовать проверку на латиницу
         # if($objName != [a-z,A-Z])
         # Создаем файл ответов с именем объекта и датой
         clear
-        read -p  "Введите количество клиентов на объекте [$clientCount]: " clientCount
-        if ($clientCount==' ')
-        then
-            clientCount=0
-        fi
+        read -p  "Введите количество РАБОЧИХ СТАНЦИЙ на объекте [${clientCount:-0}]: " clientCount
+        # if ($clientCount==' ')
+        # then
+        #     clientCount=0
+        # fi
         clear
-        read -p  "Введите количество серверов на объекте ${srvCount:-0}: " srvCount
+        # тестировать!!
+        # read -p  "Введите количество серверов на объекте ${srvCount:-0}: " srvCount
+        # clear
+        # read -p  "Задайте IP адресацию сети ${IPSubNet:-192.168.10.0/24}"
+        # clear
+        # read -p  "Введите краткое имя сервера синхронизации времени: " NTPSrv
+        # clear
+        # read -p  "Введите имя контроллера ALD: " alddc
+        # clear
+        # read -p  "Введите полное название домена ${domenFullName:-'$objName'.net}: " domenFullName
+        
+        echo "СЕРВЕР - компьютер который планируется в роли контроллера домена, сервера NTP, bind и т.п."
+        echo "Чаще всего, серверов не бывает больше 1го, если в Вашем случае компьютеров подпадающих под определение СЕРВЕР"
+        read -p  "Введите количество СЕРВЕРОВ на объекте [${srvCount:-0}]: "
         clear
-        read -p  "Задайте IP адресацию сети ${IPSubNet:-192.168.10.0/24}"
+        read -p  "Задайте IP адресацию сети [${IPSubNet:-192.168.10.0/24}]"
         clear
-        read -p  "Введите краткое имя сервера синхронизации времени: " NTPSrv
+        read -p  "Введите краткое имя сервера синхронизации времени [${NTPSrv:-none}]: "
         clear
-        read -p  "Введите имя контроллера ALD: " alddc
+        read -p  "Введите имя контроллера ALD [${alddc:-none}]: "
         clear
-        read -p  "Введите полное название домена [$domenFullName]: " domenFullName
+        domenFullName=''$objName'.bitnet'
+        read -p  "Введите полное название домена ${domenFullName:-'$objName'.net}: "
         showValues
     }
     function showValues {
@@ -54,13 +79,15 @@ function makeAnswerFile {
             
             case $answer in
                 [Yy])
-                    myTime=$(date '+%F-%H-%M')
-                    filename='./answerfile_'$objName'_'$myTime''
-                    #filename='./answerfile_'$objName''
-                    
-                    # workFile=$filename
-                    awk 'BEGIN {printf "Общая информация представлена ниже:\n\nУсловное обозначение объекта на латинице '$objName'\nВремя составления '$myTime'\n\nКоличество клиентов на объекте '$clientCount'\nКоличество серверов на объекте '$srvCount'\nЗадана следующая IP адресация сети '$IPSubNet'\nКраткое имя сервера синхронизации времени '$NTPSrv'\nИмя контроллера ALD '$alddc'\nПолное название домена '$domenFullName'\n" }' >> $filename  #/tmp/tempf.tmp; mv /tmp/tempf.tmp
+                    # Создаем каталоги и файлы ответов, если данные опции были выбраны
+                    localStartTime=$(date '+%F-%H-%M')
+                    filename='./'$objName'/answerfile_'$objName'_'$localStartTime''
+                    awk 'BEGIN {printf "Общая информация представлена ниже:\n\nУсловное обозначение объекта на латинице '$objName'\nДата и время составления '$localStartTime'\n\nКоличество клиентов на объекте '$clientCount'\nКоличество серверов на объекте '$srvCount'\nЗадана следующая IP адресация сети '$IPSubNet'\nКраткое имя сервера синхронизации времени '$NTPSrv'\nИмя контроллера ALD '$alddc'\nПолное название домена '$domenFullName'\n" }' >> $filename  #/tmp/tempf.tmp; mv /tmp/tempf.tmp
                     # регулярное выражение, если нет точки в начале - ставит
+                    
+                    # TODO доделать логирование, в будущем
+                    # awk 'BEGIN {printf "\n'$(date '+%F-%H-%M')' добавлена информация об объекте в файл '$filename' }' >> $logfile
+                    
                     initSRV
                     initClient
                     
