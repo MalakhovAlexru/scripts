@@ -26,13 +26,13 @@ function makeAnswerFile {
             clientCount=0
         fi
         clear
-        read -p  "Введите количество серверов на объекте [$srvCount]: " srvCount
+        read -p  "Введите количество серверов на объекте ${srvCount:-0}: " srvCount
         clear
-        read -p  "Задайте IP адресацию сети [$IPSubNet]: " IPSubNet
+        read -p  "Задайте IP адресацию сети ${IPSubNet:-192.168.10.0/24}"
         clear
-        read -p  "Введите краткое имя сервера синхронизации времени [$NTPSrv]: " NTPSrv
+        read -p  "Введите краткое имя сервера синхронизации времени: " NTPSrv
         clear
-        read -p  "Введите имя контроллера ALD [$alddc]: " alddc
+        read -p  "Введите имя контроллера ALD: " alddc
         clear
         read -p  "Введите полное название домена [$domenFullName]: " domenFullName
         showValues
@@ -43,8 +43,8 @@ function makeAnswerFile {
         do
             echo "Вы указали следующие данные:"
             echo "Условное обозначение объекта на латинице - $objName"
-            echo "Количество клиентов на объекте - $clientCount"
             echo "Количество серверов на объекте - $srvCount"
+            echo "Количество клиентов на объекте - $clientCount"
             echo "Задана следующая IP адресация сети - $IPSubNet"
             echo "Краткое имя сервера синхронизации времени - $NTPSrv"
             echo "Имя контроллера ALD - $alddc"
@@ -54,16 +54,16 @@ function makeAnswerFile {
             
             case $answer in
                 [Yy])
-                    # date '+%F-%H-%M'>curDate
-                    # filename='. ./answerfile_'$objName'_'$curDate''
-                    filename='./answerfile_'$objName''
-                    # myTime=date
+                    myTime=$(date '+%F-%H-%M')
+                    filename='./answerfile_'$objName'_'$myTime''
+                    #filename='./answerfile_'$objName''
                     
                     # workFile=$filename
                     awk 'BEGIN {printf "Общая информация представлена ниже:\n\nУсловное обозначение объекта на латинице '$objName'\nВремя составления '$myTime'\n\nКоличество клиентов на объекте '$clientCount'\nКоличество серверов на объекте '$srvCount'\nЗадана следующая IP адресация сети '$IPSubNet'\nКраткое имя сервера синхронизации времени '$NTPSrv'\nИмя контроллера ALD '$alddc'\nПолное название домена '$domenFullName'\n" }' >> $filename  #/tmp/tempf.tmp; mv /tmp/tempf.tmp
                     # регулярное выражение, если нет точки в начале - ставит
-                    initClient
                     initSRV
+                    initClient
+                    
                     exit
                 ;;
                 [Nn]) enterValues;;
@@ -82,7 +82,7 @@ function makeAnswerFile {
             read -p  "Названия Клиентов типовые? (y|n) " answer
             case $answer in
                 [Yy])
-                    read -p  "Введите основу типового имени (основа-arm дополнение-1): " armName
+                    read -p  "Введите основу типового имени (основа-arm): " armName
                     clear
                     read -p  "Введите начальное значение IP для определения адреса(1-255): " armIP
                     [[ $IPSubNet =~ $myRegexp ]]
@@ -103,7 +103,7 @@ function makeAnswerFile {
                         for (( i=0 ; i <= $clientCount ; i++))
                         {
                             read -p  "Введите имя для АРМ c ID '$ID' (нижн.рег+латиница): " armName
-                            read -p  "Введите имя для АРМ c IP: " localARMIP_nonauto
+                            read -p  "Введите IP АРМ полностью: " localARMIP_nonauto
                             sed -i '$a\ID='$ID' ROLE=CLIENT HOSTNAME='$armName' IP='$localARMIP_nonauto' NTPsrv='$NTPSrv' ALD_Contrl='$alddc'' $filename;
                             ID=$[ID+1]
                         }
@@ -120,13 +120,15 @@ function makeAnswerFile {
     }
     # нет - цикл по количеству клиентов в АС
     function initSRV {
-        read -p  "Названия Серверов типовые?: " answer
         clear
+        read -p  "Названия Серверов типовые? (y|n): " answer
         while :
         do
             case $answer in
                 [Yy])
-                    read -p  "Введите основу типового имени (основа-srv дополнение-1): " srvName
+                    clear
+                    read -p  "Введите основу типового имени (основа-srv): " srvName
+                    clear
                     read -p  "Введите начальное значение IP для определения адреса: " srvIP
                     [[ $IPSubNet =~ $myRegexp ]]
                     sed -i '$a\\nСписок серверов:\n' $filename;
